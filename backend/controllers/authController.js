@@ -2,14 +2,19 @@ const { promisify } = require('util');
 const User = require('../models/UserModel');
 const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
+const searchController = require('./searchController');
 
 const authController = {
 	signup: catchAsync(async (req, res, next) => {
 		const { loginName, password } = req.body;
+		const searches = await searchController.getSavedSearches(req, res);
+		console.log('SIGNUP ', searches);
 		const newUser = await User.create({
 			loginName,
 			password,
+			searches,
 		});
+		console.log(newUser);
 		const token = newUser.getJwToken();
 		res
 			.status(201)
