@@ -7,6 +7,7 @@ const router = express.Router();
 router
 	.route('/weather')
 	.get(authController.protect, searchController.getSavedSearches)
-	.post(authController.protect, searchController.saveSearch);
+	.post(authController.protect, searchController.saveSearch)
+	.patch(authController.protect, searchController.deleteSearch);
 
 module.exports = router;

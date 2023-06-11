@@ -24,11 +24,7 @@ app.all('*', (req, res, next) => {
 });
 
 //Errors
-app.use((err, req, res, next) => {
-	err.statusCode = err.statusCode || 500;
-	err.status = err.status || 'error';
-	res.status(err.statusCode).json({ status: err.status, message: err.message });
-});
+app.use(errorController);
 
 // Start the server
 const port = process.env.PORT || 3000;
