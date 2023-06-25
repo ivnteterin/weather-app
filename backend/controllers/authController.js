@@ -3,19 +3,19 @@ const jwt = require('jsonwebtoken');
 const catchAsync = require('../utils/catchAsync');
 const searchController = require('./searchController');
 const User = require('../models/UserModel');
+const Search = require('../models/SearchModel');
 const ErrorApp = require('../utils/ErrorApp');
 
 const authController = {
 	signup: catchAsync(async (req, res, next) => {
 		const { loginName, password } = req.body;
-		const searches = await searchController.getSavedSearches(req, res);
-		console.log('SIGNUP ', searches);
+		const searchesFromCookie = await searchController.getSavedSearches(req, res);
+		const searches = searchesFromCookie.map((search) => new Search(search));
 		const newUser = await User.create({
 			loginName,
 			password,
 			searches,
 		});
-		console.log(newUser);
 		const token = newUser.getJwToken();
 		res
 			.status(201)

@@ -15,6 +15,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
+app.use(errorController);
 // Routes
 app.use('/api/search', searchRoutes);
 app.use('/api/users', userRoutes);
@@ -24,7 +25,6 @@ app.all('*', (req, res, next) => {
 });
 
 //Errors
-app.use(errorController);
 
 // Start the server
 const port = process.env.PORT || 3000;
